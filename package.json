@@ -1,0 +1,100 @@
+{
+  "name": "jest-ai",
+  "version": "0.0.0",
+  "description": "Custom jest matchers for testing AI applications",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./types/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./types/index.d.ts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./jest-globals": {
+      "require": {
+        "types": "./types/jest-globals.d.ts",
+        "default": "./dist/jest-globals.js"
+      },
+      "import": {
+        "types": "./types/jest-globals.d.ts",
+        "default": "./dist/jest-globals.mjs"
+      }
+    },
+    "./matchers": {
+      "require": {
+        "types": "./types/matchers-standalone.d.ts",
+        "default": "./dist/matchers.js"
+      },
+      "import": {
+        "types": "./types/matchers-standalone.d.ts",
+        "default": "./dist/matchers.mjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "*.d.ts",
+    "jest-globals.js",
+    "matchers.js",
+    "vitest.js"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "jest",
+    "testing",
+    "ai",
+    "llm"
+  ],
+  "dependencies": {
+    "@jest/globals": ">= 28",
+    "@langchain/openai": "^0.0.28",
+    "openai": "^4.38.2",
+    "zod": "^3.22.5"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "expect": "^29.6.2",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@jest/globals": ">= 28",
+    "@types/jest": ">= 28",
+    "jest": ">= 28"
+  },
+  "peerDependenciesMeta": {
+    "@jest/globals": {
+      "optional": true
+    },
+    "@types/jest": {
+      "optional": true
+    },
+    "jest": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeably-io/jest-ai.git"
+  },
+  "author": "ran@codeably.io",
+  "bugs": {
+    "url": "https://github.com/codeably-io/jest-ai/issues"
+  },
+  "homepage": "https://github.com/codeably-io/jest-ai#readme"
+}
