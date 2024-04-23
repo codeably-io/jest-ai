@@ -48,7 +48,8 @@
     "vitest.js"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c --mini",
+    "dev": "rollup -c -w --sourcemaps"
   },
   "keywords": [
     "jest",

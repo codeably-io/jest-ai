@@ -11,6 +11,9 @@
     "strict": true, // Enable all strict type-checking options
     "skipLibCheck": true
   },
-  "include": ["src/**/*"],
+  "include": [
+    "./src/**/*",
+    "./types/**/*"
+  ],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }
