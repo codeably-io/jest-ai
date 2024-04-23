@@ -109,6 +109,15 @@ haven't already:
   ],
 ```
 
+If TypeScript is not able to resolve the matcher methods, you can add the following to your `tsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "types": ["jest", "jest-ai"]
+  }
+}
+```
+
 ## Custom matchers
 
 ### `toSemanticallyMatch`
