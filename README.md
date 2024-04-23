@@ -233,13 +233,13 @@ MIT
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
 [version-badge]:
- https://img.shields.io/npm/v/@codeably/jest-ai.svg?style=flat-square
-[package]: https://www.npmjs.com/package/@codeably/jest-ai
+ https://img.shields.io/npm/v/jest-ai.svg?style=flat-square
+[package]: https://www.npmjs.com/package/jest-ai
 [downloads-badge]: 
-  https://img.shields.io/npm/dm/@codeably/jest-ai.svg?style=flat-square
-[npmtrends]: http://www.npmtrends.com/@codeably/jest-ai
+  https://img.shields.io/npm/dm/jest-ai.svg?style=flat-square
+[npmtrends]: http://www.npmtrends.com/jest-ai
 [license-badge]: 
-  https://img.shields.io/npm/l/@codeably/jest-ai.svg?style=flat-square
+  https://img.shields.io/npm/l/jest-ai.svg?style=flat-square
 [license]: https://github.com/codeably-io/jest-ai/blob/main/LICENSE
 [prs-badge]: 
   https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
