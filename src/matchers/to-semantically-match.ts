@@ -8,7 +8,11 @@ export async function toSemanticallyMatch(
   expected: string
 ) {
   const matchers = getMatchers();
-  const pass = await matchers.semantic(Similarity.MID, expected, received);
+  const {
+		similarityThreshold,
+	} = global.jestAiConfig ?? { similarityThreshold: Similarity.MID };
+
+	const pass = await matchers.semantic(similarityThreshold, expected, received);
 
   if (pass) {
     return {

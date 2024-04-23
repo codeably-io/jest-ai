@@ -1,6 +1,8 @@
 /// <reference types="jest" />
 
 import {type JestAIMatchers} from './matchers'
+import { Similarity } from '../src/utils/similarity';
+import { expect } from '@jest/globals';
 
 declare global {
 	namespace jest {
@@ -10,4 +12,8 @@ declare global {
 				R
 			> {}
 	}
+}
+
+export interface JestAiConfig {
+	similarityThreshold: Similarity;
 }

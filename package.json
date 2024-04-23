@@ -36,6 +36,16 @@
         "default": "./dist/matchers.mjs"
       }
     },
+    "./global": {
+      "require": {
+        "types": "./types/global.d.ts",
+        "default": "./dist/global.js"
+      },
+      "import": {
+        "types": "./types/global.d.ts",
+        "default": "./dist/global.mjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "types": "types/index.d.ts",
