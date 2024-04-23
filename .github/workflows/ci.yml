@@ -3,20 +3,38 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [ 18, 20 ]
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: Run build script
+        run: npm run build
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
