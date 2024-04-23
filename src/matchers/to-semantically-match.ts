@@ -3,7 +3,7 @@ import { Similarity } from '../utils/similarity';
 
 export async function toSemanticallyMatch(received: string, expected: string) {
 	const matchers = getMatchers();
-	const pass = await matchers.semantic(Similarity.HIGH, expected, received);
+	const pass = await matchers.semantic(Similarity.MID, expected, received);
 
 	if (pass) {
 		return {
