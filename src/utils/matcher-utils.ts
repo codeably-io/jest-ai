@@ -1,5 +1,5 @@
 import { Embeddings } from "./embeddings";
-import { isSimilarByScore, Similarity } from "./similarity";
+import { isSimilarByScore, SimilarityLevel } from "./similarity";
 import { z } from "zod";
 import OpenAI from "openai";
 
@@ -14,14 +14,18 @@ export function getMatchers() {
   const embeddings = new Embeddings();
 
   async function semanticMatcher(
-    rank: Similarity,
+    threshold: SimilarityLevel | number,
     expected: string,
     actual: string
   ): Promise<boolean> {
     // TODO: clean the noise out of "actual" using NLP
     const score = await embeddings.compareEmbeddings(expected, actual);
 
-    return isSimilarByScore(rank, score);
+    if (typeof threshold === 'number') {
+			return score > threshold;
+		}
+
+		return isSimilarByScore(threshold, score);
   }
 
   function absoluteMatcher(expected: string, actual: string): boolean {

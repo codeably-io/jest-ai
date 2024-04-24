@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 
-import {type JestAIMatchers} from './matchers'
-import { Similarity } from '../src/utils/similarity';
+import { type JestAIMatchers } from './matchers'
+import { type ConfigurableSimilarity } from '../src/utils/similarity';
 import { expect } from '@jest/globals';
 
 declare global {
@@ -12,8 +12,7 @@ declare global {
 				R
 			> {}
 	}
+	var jestAiConfig: JestAiConfig;
 }
 
-export interface JestAiConfig {
-	similarityThreshold: Similarity;
-}
+export interface JestAiConfig extends ConfigurableSimilarity {}

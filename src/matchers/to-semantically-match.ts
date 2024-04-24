@@ -1,5 +1,5 @@
 import { getMatchers } from "../utils/matcher-utils";
-import { Similarity } from "../utils/similarity";
+import { SimilarityLevel } from "../utils/similarity";
 import { MatcherUtils } from "expect";
 
 export async function toSemanticallyMatch(
@@ -9,10 +9,13 @@ export async function toSemanticallyMatch(
 ) {
   const matchers = getMatchers();
   const {
+		similarityLevel,
 		similarityThreshold,
-	} = global.jestAiConfig ?? { similarityThreshold: Similarity.MID };
+	} = global.jestAiConfig;
+	const explicitThresholdLevel = similarityLevel?.toUpperCase() as SimilarityLevel | undefined;
+	const threshold = similarityThreshold ?? explicitThresholdLevel ?? SimilarityLevel.MID
 
-	const pass = await matchers.semantic(similarityThreshold, expected, received);
+	const pass = await matchers.semantic(threshold, expected, received);
 
   if (pass) {
     return {
