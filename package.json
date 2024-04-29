@@ -1,6 +1,6 @@
 {
   "name": "jest-ai",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Custom jest matchers for testing AI applications",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
