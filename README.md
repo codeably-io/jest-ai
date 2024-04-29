@@ -66,15 +66,14 @@ as this library uses the OpenAI API to run the tests.
 Import `jest-ai` once (for instance in your [tests setup
 file][]) and you're good to go:
 
-[tests setup file]:
-  https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array
+[tests setup file]: https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array
 
 ```javascript
 // In your own jest-setup.js (or any other name)
-import 'jest-ai'
+import "jest-ai";
 
 // In jest.config.js add (if you haven't already)
-setupFilesAfterEnv: ['<rootDir>/jest-setup.js']
+setupFilesAfterEnv: ["<rootDir>/jest-setup.js"];
 ```
 
 ### With `@jest/globals`
@@ -85,13 +84,11 @@ import in your tests setup file:
 
 ```javascript
 // In your own jest-setup.js (or any other name)
-import 'jest-ai/jest-globals'
+import "jest-ai/jest-globals";
 ```
 
-[jest-globals announcement]:
-  https://jestjs.io/blog/2020/05/05/jest-26#a-new-way-to-consume-jest---jestglobals
-[inject-globals docs]:
-  https://jestjs.io/docs/configuration#injectglobals-boolean
+[jest-globals announcement]: https://jestjs.io/blog/2020/05/05/jest-26#a-new-way-to-consume-jest---jestglobals
+[inject-globals docs]: https://jestjs.io/docs/configuration#injectglobals-boolean
 
 ### With TypeScript
 
@@ -110,6 +107,7 @@ haven't already:
 ```
 
 If TypeScript is not able to resolve the matcher methods, you can add the following to your `tsconfig.json`:
+
 ```json
 {
   "compilerOptions": {
@@ -123,7 +121,7 @@ If TypeScript is not able to resolve the matcher methods, you can add the follow
 ### `toSemanticallyMatch`
 
 ```typescript
-toSemanticallyMatch()
+toSemanticallyMatch();
 ```
 
 This allows checking if the response from the AI matches or includes the expected response.
@@ -133,16 +131,20 @@ This is in order to allow the natural and flexible nature of using AI.
 #### Examples
 
 ```javascript
-const response = await ai.getResponse('Hello')
+const response = await ai.getResponse("Hello");
 // AI Response: "Hello, I am a chatbot set to help you with information for your flight. Can you please share your flight number with me?"
-await expect(respone).toSemanticallyMatch('What is your flight number?')
-```
-or
-```javascript
-await expect('What is your surname?').toSemanticallyMatch('What is your last name?')
+await expect(respone).toSemanticallyMatch("What is your flight number?");
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher 
+or
+
+```javascript
+await expect("What is your surname?").toSemanticallyMatch(
+  "What is your last name?"
+);
+```
+
+> :warning: **This matcher is async**: use async await when calling the matcher
 > This library uses a cosine calculation to check the similarity distance between the two strings.
 > When running semantic match, a range of options can pass/fail. Currently, the threshold is set to 0.75.
 
@@ -151,16 +153,20 @@ await expect('What is your surname?').toSemanticallyMatch('What is your last nam
 ### `toHaveUsedSomeTools`
 
 ```typescript
-toHaveUsedSomeTools()
+toHaveUsedSomeTools();
 ```
 
-Checks if some of the tools given to the LLM were used.
+Assert that a Chat Completion response requests the use of a particular tool.
 
 #### Examples
 
 ```javascript
-const getResponse = async () => await ai.getResponse('Will my KL1234 flight be delayed?')
-await expect(getResponse).toHaveUsedSomeTools(['get_flight_status'])
+const getResponse = async () =>
+  await ai.getResponse("Will my KL1234 flight be delayed?");
+await expect(getResponse).toHaveUsedSomeTools(["get_flight_status"]);
+await expect(getResponse).toHaveUsedSomeTools([
+  { name: "get_flight_status", arguments: "KL1234" },
+]);
 ```
 
 > :warning: **This matcher is async**: use async await when calling the matcher
@@ -168,10 +174,52 @@ await expect(getResponse).toHaveUsedSomeTools(['get_flight_status'])
 
 <hr />
 
+### `toHaveUsedSomeAssistantTools`
+
+```typescript
+toHaveUsedSomeAssistantTools();
+```
+
+Assert that an Assistants API Run response requests the use of a particular tool.
+
+#### Examples
+
+```javascript
+const assistant = await openai.beta.assistants.create({
+  name: "Weather Reporter",
+  instructions: "You are a reporter who answers questions on the weather.",
+  tools: [getWeatherTool],
+  model: "gpt-3.5-turbo-0125",
+});
+
+const thread = await openai.beta.threads.create();
+await openai.beta.threads.messages.create(thread.id, {
+  role: "user",
+  content: "What is the weather in New York City?",
+});
+
+let run = await openai.beta.threads.runs.create(thread.id, {
+  assistant_id: assistant.id,
+});
+
+// Assert on just function name
+await expect(run).toHaveUsedSomeAssistantTools(["getWeather"]);
+
+// Assert on function name and arguments
+await expect(run).toHaveUsedAllAssistantTools([
+  { name: "getWeather", arguments: "New York City" },
+]);
+```
+
+> :warning: **This matcher is async**: use async await when calling the matcher
+> This matcher polls the OpenAI Run API to check for tool calls.
+
+<hr />
+
 ### `toHaveUsedAllTools`
 
 ```typescript
-toHaveUsedAllTools()
+toHaveUsedAllTools();
 ```
 
 Checks if all the tools given to the LLM were used. Will fail if any of the tools were not used.
@@ -179,8 +227,16 @@ Checks if all the tools given to the LLM were used. Will fail if any of the tool
 #### Examples
 
 ```javascript
-const getResponse = async () => await ai.getResponse('Will my KL1234 flight be delayed?')
-await expect(getResponse).toHaveUsedAllTools(['get_flight_status', 'get_flight_delay'])
+const getResponse = async () =>
+  await ai.getResponse("Will my KL1234 flight be delayed?");
+await expect(getResponse).toHaveUsedAllTools([
+  "get_flight_status",
+  "get_flight_delay",
+]);
+await expect(getResponse).toHaveUsedAllTools([
+  { name: "get_flight_status", arguments: "KL1234" },
+  { name: "get_flight_delay", arguments: "KL1234" },
+]);
 ```
 
 > :warning: **This matcher is async**: use async await when calling the matcher
@@ -188,10 +244,52 @@ await expect(getResponse).toHaveUsedAllTools(['get_flight_status', 'get_flight_d
 
 <hr />
 
+### `toHaveUsedAllAssistantTools`
+
+```typescript
+toHaveUsedAllAssistantTools();
+```
+
+Assert that an Assistants API Run response requests the use of a particular tool.
+
+#### Examples
+
+```javascript
+const assistant = await openai.beta.assistants.create({
+  name: "Weather Reporter",
+  instructions: "You are a reporter who answers questions on the weather.",
+  tools: [getWeatherTool],
+  model: "gpt-3.5-turbo-0125",
+});
+
+const thread = await openai.beta.threads.create();
+await openai.beta.threads.messages.create(thread.id, {
+  role: "user",
+  content: "What is the weather in New York City and in San Francisco?",
+});
+
+let run = await openai.beta.threads.runs.create(thread.id, {
+  assistant_id: assistant.id,
+});
+// Assert simply on function name
+await expect(run).toHaveUsedAllAssistantTools(["getWeather"]);
+
+// Assert on function name and arguments
+await expect(run).toHaveUsedAllAssistantTools([
+  { name: "getWeather", arguments: "New York City" },
+  { name: "getWeather", arguments: "San Francisco" },
+]);
+```
+
+> :warning: **This matcher is async**: use async await when calling the matcher
+> This matcher polls the OpenAI Run API to check for tool calls.
+
+<hr />
+
 ### `toMatchZodSchema`
 
 ```typescript
-toMatchZodSchema()
+toMatchZodSchema();
 ```
 
 Many times, we would like our LLMs to respond in a JSON format that's easier to work with later.
@@ -211,15 +309,17 @@ const response = await ai.getResponse(`
             },
         ]
     }
-`)
+`);
 const expectedSchema = z.object({
-    animals: z.array(z.object({
-        name: z.string(),
-        height: z.string(),
-        weight: z.string()
-    }))
-})
-expect(getResponse).toMatchZodSchema(expectedSchema)
+  animals: z.array(
+    z.object({
+      name: z.string(),
+      height: z.string(),
+      weight: z.string(),
+    })
+  ),
+});
+expect(getResponse).toMatchZodSchema(expectedSchema);
 ```
 
 <hr />
