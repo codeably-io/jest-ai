@@ -1,14 +1,18 @@
+import type {
+  RequiredActionFunctionToolCall,
+  Run,
+} from "openai/src/resources/beta/threads/runs";
 import { getMatchers } from "../utils/matcher-utils";
-import { ChatCompletion } from "openai/src/resources/chat/completions";
 import { MatcherUtils } from "expect";
 
-export async function toHaveUsedAllTools(
+// TODO: Prefer `toHaveCalledTool`?
+export async function toHaveUsedSomeAssistantTools(
   this: MatcherUtils,
-  received: () => Promise<ChatCompletion>,
-  expectedTools: string[]
+  received: Run,
+  expectedTools: string[] | RequiredActionFunctionToolCall.Function[]
 ) {
   const matchers = getMatchers();
-  const pass = await matchers.tools(expectedTools, received, true);
+  const pass = await matchers.assistantTools(expectedTools, received, false);
 
   if (pass) {
     return {

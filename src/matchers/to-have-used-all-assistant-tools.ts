@@ -1,14 +1,17 @@
+import type {
+  RequiredActionFunctionToolCall,
+  Run,
+} from "openai/src/resources/beta/threads/runs";
 import { getMatchers } from "../utils/matcher-utils";
-import { ChatCompletion } from "openai/src/resources/chat/completions";
 import { MatcherUtils } from "expect";
 
-export async function toHaveUsedSomeTools(
+export async function toHaveUsedAllAssistantTools(
   this: MatcherUtils,
-  received: () => Promise<ChatCompletion>,
-  expectedTools: string[]
+  received: Run,
+  expectedTools: string[] | RequiredActionFunctionToolCall.Function[]
 ) {
   const matchers = getMatchers();
-  const pass = await matchers.tools(expectedTools, received, false);
+  const pass = await matchers.assistantTools(expectedTools, received, true);
 
   if (pass) {
     return {
@@ -21,9 +24,9 @@ export async function toHaveUsedSomeTools(
   }
   return {
     message: () =>
-      `Expected some tools: ${this.utils.printExpected(
+      `Expected all tools: ${this.utils.printExpected(
         expectedTools
-      )}\n to have been used, but they were not`,
+      )} to have been used but they were not`,
     pass: false,
   };
 }
