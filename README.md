@@ -34,8 +34,11 @@ that you can use to extend jest. These will allow testing the calls and response
   - [With TypeScript](#with-typescript)
 - [Custom matchers](#custom-matchers)
   - [`toSemanticallyMatch`](#tosemanticallymatch)
+  - [`toSatisfyStatement`](#tosatisfystatement)
   - [`toHaveUsedSomeTools`](#tohaveusedsometools)
+  - [`toHaveUsedSomeAssistantTools`](#tohaveusedsomeassistanttools)
   - [`toHaveUsedAllTools`](#tohaveusedalltools)
+  - [`toHaveUsedAllAssistantTools`](#tohaveusedallassistanttools)
   - [`toMatchZodSchema`](#tomatchzodschema)
 - [LICENSE](#license)
 
@@ -133,7 +136,7 @@ This is in order to allow the natural and flexible nature of using AI.
 ```javascript
 const response = await ai.getResponse("Hello");
 // AI Response: "Hello, I am a chatbot set to help you with information for your flight. Can you please share your flight number with me?"
-await expect(respone).toSemanticallyMatch("What is your flight number?");
+await expect(response).toSemanticallyMatch("What is your flight number?");
 ```
 
 or
@@ -147,6 +150,39 @@ await expect("What is your surname?").toSemanticallyMatch(
 > :warning: **This matcher is async**: use async await when calling the matcher
 > This library uses a cosine calculation to check the similarity distance between the two strings.
 > When running semantic match, a range of options can pass/fail. Currently, the threshold is set to 0.75.
+
+<hr />
+
+### `toSatisfyStatement`
+
+```typescript
+toSatisfyStatement();
+```
+
+This checks if the response from the AI satisfies a simple true of false statement.
+It uses a custom prompt and a separate chat completion to determine the truthiness of the statement.
+If the truthiness of the statement cannot be determined from the response, the assertion will fail.
+
+#### Examples
+
+```javascript
+const response = await ai.getResponse("Hello");
+// AI Response: "Hello, I am a chatbot set to help you with information for your flight. Can you please share your flight number with me?"
+await expect(response).toSatisfyStatement(
+  "It contains a question asking for your flight number."
+);
+```
+
+or
+
+```javascript
+await expect("What is your surname?").toSatisfyStatement(
+  "It asks for your last name."
+);
+```
+
+> :warning: **This matcher is async**: use async await when calling the matcher
+> This assertion uses the OpenAI chat completion API, using the gpt-4-turbo model by default. As always, be aware of your API usage!
 
 <hr />
 

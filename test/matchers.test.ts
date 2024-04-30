@@ -13,7 +13,6 @@ jest.mock("@langchain/openai", () => ({
     };
   }),
 }));
-
 jest.mock("openai", () =>
   jest.fn().mockImplementation(() => {
     return {
