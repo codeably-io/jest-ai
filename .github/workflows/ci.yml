@@ -6,6 +6,7 @@ on:
 
 jobs:
   release:
+    if: github.repository == 'codeably-io/jest-ai'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
