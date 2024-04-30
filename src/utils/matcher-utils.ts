@@ -102,16 +102,16 @@ export function getMatchers() {
         {
           role: "system",
           content: `
-						You are a comprehension utility that confirms whether or not a given statement is true within some context.
-						The user will provide a statement. Using ONLY the provided context, you will determine if the statement is true or false.
-						The context that you will analyse is provided below between the "---" characters.
-						You will respond with only the text "true" or "false" and with no other characters or words.
-						If the answer to the truthiness of the statement cannot be found within the context, respond with "false".
-						ONLY USE INFORMATION FOUND WITHIN THE CONTEXT TO ANSWER THE QUESTION
-						---
-						${actual}
-						---
-					`,
+            You are a comprehension utility that confirms whether or not a given statement is true within some context.
+            The user will provide a statement. Using ONLY the provided context, you will determine if the statement is true or false.
+            The context that you will analyse is provided below between the "---" characters.
+            You will respond with only the text "true" or "false" and with no other characters or words.
+            If the answer to the truthiness of the statement cannot be found within the context, respond with "false".
+            ONLY USE INFORMATION FOUND WITHIN THE CONTEXT TO ANSWER THE QUESTION
+            ---
+            ${actual}
+            ---
+          `,
         },
         {
           role: "user",

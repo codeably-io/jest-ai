@@ -23,7 +23,7 @@ export async function toSemanticallyMatch(
     message: () =>
       `Expected: ${this.utils.printExpected(
         expected
-      )} to have cosine similarity to ${this.utils.printReceived(received)}`,
+      )} to semantically match ${this.utils.printReceived(received)}`,
     pass: false,
   };
 }
