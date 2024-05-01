@@ -127,9 +127,10 @@ If TypeScript is not able to resolve the matcher methods, you can add the follow
 toSemanticallyMatch();
 ```
 
-This allows checking if the response from the AI matches or includes the expected response.
-It uses semantic comparison, which means that "What is your age?" and "When were you born?" could both pass.
-This is in order to allow the natural and flexible nature of using AI.
+This allows checking if the response from the AI semantically matches (i.e. has a similar meaning) to an assertion.
+AI responses are non-deterministic and can therefore result in the same thing being stated in many different ways.
+For example, an AI response requesting the users age could take various forms, e.g. "What is your age?", "When were you born?", etc.
+Semantic matching allows us to ignore the strings character content and perform comparisons based on meaning. For example, we could use this method to assert that the above response semantically matches a string such as "How old are you?"
 
 #### Examples
 
@@ -139,17 +140,24 @@ const response = await ai.getResponse("Hello");
 await expect(response).toSemanticallyMatch("What is your flight number?");
 ```
 
-or
-
 ```javascript
 await expect("What is your surname?").toSemanticallyMatch(
   "What is your last name?"
 );
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
-> This library uses a cosine calculation to check the similarity distance between the two strings.
-> When running semantic match, a range of options can pass/fail. Currently, the threshold is set to 0.75.
+```javascript
+// Specifying the matching rank. Options are "low", "mid" (default) and "high"
+await expect("What is your surname?").toSemanticallyMatch(
+  "What is your last name?",
+  "low"
+);
+```
+
+> :warning: **This matcher is async**: use async await when calling the matcher.
+> This library makes requests to the OpenAI API to determine the embeddings for both strings. As always, be aware of your API usage!
+> It uses a cosine calculation to check the similarity distance between the two strings.
+> When running semantic match, a range of options can pass/fail. Currently, the threshold is set to 0.75 ("mid").
 
 <hr />
 
@@ -181,7 +189,7 @@ await expect("What is your surname?").toSatisfyStatement(
 );
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This assertion uses the OpenAI chat completion API, using the gpt-4-turbo model by default. As always, be aware of your API usage!
 
 <hr />
@@ -205,7 +213,7 @@ await expect(getResponse).toHaveUsedSomeTools([
 ]);
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This matcher uses the OpenAI chat completion API to check tool calls.
 
 <hr />
@@ -247,7 +255,7 @@ await expect(run).toHaveUsedAllAssistantTools([
 ]);
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This matcher polls the OpenAI Run API to check for tool calls.
 
 <hr />
@@ -275,7 +283,7 @@ await expect(getResponse).toHaveUsedAllTools([
 ]);
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This matcher uses the OpenAI chat completion API to check tool calls.
 
 <hr />
@@ -317,7 +325,7 @@ await expect(run).toHaveUsedAllAssistantTools([
 ]);
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This matcher polls the OpenAI Run API to check for tool calls.
 
 <hr />
