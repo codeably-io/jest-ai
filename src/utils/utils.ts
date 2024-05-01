@@ -36,31 +36,31 @@ export function matchToolCallsToExpectedTools(
   allCheck: boolean
 ) {
   if (isStringArray(expectedTools)) {
+    const matchToolCall = (tool: string) =>
+      toolCalls.findIndex((call) => call.function.name === tool) > -1;
+
     if (allCheck) {
-      return toolCalls.every((call) =>
-        expectedTools.includes(call.function.name)
-      );
+      return expectedTools.every(matchToolCall);
     }
 
-    return toolCalls.some((call) => expectedTools.includes(call.function.name));
+    return expectedTools.some(matchToolCall);
   }
   if (isToolCallArray(expectedTools)) {
-    if (allCheck) {
-      return toolCalls.every((call) =>
-        expectedTools.find(
-          (expectedTool) =>
-            expectedTool.name === call.function.name &&
-            expectedTool.arguments === call.function.arguments
-        )
-      );
-    }
-    return toolCalls.some((call) =>
-      expectedTools.find(
-        (expectedTool) =>
+    const matchToolCall = (
+      expectedTool:
+        | RequiredActionFunctionToolCall.Function
+        | ChatCompletionMessageToolCall.Function
+    ) =>
+      toolCalls.findIndex(
+        (call) =>
           expectedTool.name === call.function.name &&
           expectedTool.arguments === call.function.arguments
-      )
-    );
+      ) > -1;
+
+    if (allCheck) {
+      return expectedTools.every(matchToolCall);
+    }
+    return expectedTools.some(matchToolCall);
   }
   return false;
 }
