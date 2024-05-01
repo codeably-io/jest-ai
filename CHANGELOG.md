@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/codeably-io/jest-ai/compare/v1.1.0...v2.0.0) (2024-05-01)
+
+
+### Bug Fixes
+
+* corrected bug in checking all tools used ([2b91786](https://github.com/codeably-io/jest-ai/commit/2b917864e5612c806f7347d685379843456c1be2))
+
+
+### BREAKING CHANGES
+
+* Changes the fundamentals of the toHaveUsedAllTools and toHaveUsedAllAssistantTools
+that will cause existing usages to potentially break
+
 # 1.0.0 (2024-04-29)
 
 
