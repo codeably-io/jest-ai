@@ -5,10 +5,11 @@ import { MatcherUtils } from "expect";
 export async function toSemanticallyMatch(
   this: MatcherUtils,
   received: string,
-  expected: string
+  expected: string,
+  rank: Similarity = Similarity.MID
 ) {
   const matchers = getMatchers();
-  const pass = await matchers.semantic(Similarity.MID, expected, received);
+  const pass = await matchers.semantic(rank, expected, received);
 
   if (pass) {
     return {
