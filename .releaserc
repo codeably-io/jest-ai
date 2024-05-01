@@ -15,11 +15,13 @@
             "@semantic-release/git",
             {
                 "assets": [
-                    "CHANGELOG.md"
+                    "CHANGELOG.md",
+                    "package.json"
                 ]
             }
         ],
         "@semantic-release/github",
         "@semantic-release/npm"
-    ]
+    ],
+    "debug": true,
 }
