@@ -19,7 +19,7 @@
 ## The problem
 
 Development of AI tools and applications is a process which requires a lot of manual testing and prompt tweaking.
-Not only this, but for many developers the world of AI feels like "uncharted land"
+Not only this, but for many developers the world of AI feels like "uncharted land".
 
 ## This solution
 
@@ -147,7 +147,7 @@ await expect("What is your surname?").toSemanticallyMatch(
 );
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This library uses a cosine calculation to check the similarity distance between the two strings.
 > When running semantic match, a range of options can pass/fail. Currently, the threshold is set to 0.75.
 
@@ -181,7 +181,7 @@ await expect("What is your surname?").toSatisfyStatement(
 );
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This assertion uses the OpenAI chat completion API, using the gpt-4-turbo model by default. As always, be aware of your API usage!
 
 <hr />
@@ -205,7 +205,7 @@ await expect(getResponse).toHaveUsedSomeTools([
 ]);
 ```
 
-> :warning: **This matcher is async**: use async await when calling the matcher
+> :warning: **This matcher is async**: use async await when calling the matcher.
 > This matcher uses the OpenAI chat completion API to check tool calls.
 
 <hr />

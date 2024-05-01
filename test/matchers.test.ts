@@ -68,7 +68,7 @@ describe("Matchers", () => {
       expect(pollFn).toHaveBeenCalledWith("threadId", "runId");
     });
 
-    it("passes with a match on simple match with function name", async () => {
+    it("passes with a simple match on function name", async () => {
       pollFn.mockImplementationOnce((threadId, runId) => {
         return {
           status: "requires_action",
@@ -181,6 +181,35 @@ describe("Matchers", () => {
         [{ name: "getWeather", arguments: "Albany" }],
         { thread_id: "threadId", id: "runId" } as Run,
         false
+      );
+      expect(pass).toEqual(false);
+      expect(pollFn).toHaveBeenCalledWith("threadId", "runId");
+    });
+
+    it("fails when not all tool calls are matched", async () => {
+      pollFn.mockImplementationOnce((threadId, runId) => {
+        return {
+          status: "requires_action",
+          required_action: {
+            type: "submit_tool_outputs",
+            submit_tool_outputs: {
+              tool_calls: [
+                {
+                  type: "function",
+                  function: {
+                    name: "getWeather",
+                  },
+                },
+              ],
+            },
+          },
+        } as Partial<Run>;
+      });
+      const matchers = getMatchers();
+      const pass = await matchers.assistantTools(
+        ["getWeather", "getTemperature"],
+        { thread_id: "threadId", id: "runId" } as Run,
+        true
       );
       expect(pass).toEqual(false);
       expect(pollFn).toHaveBeenCalledWith("threadId", "runId");
