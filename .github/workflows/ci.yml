@@ -13,8 +13,17 @@ jobs:
       matrix:
         node: [20]
     steps:
+      - name: 'Generate token'
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.BOT_APP_ID }}
+          private_key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -35,5 +44,5 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
