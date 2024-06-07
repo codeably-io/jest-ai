@@ -38,6 +38,15 @@ declare namespace matchers {
 		 *
 		 */
 		toMatchZodSchema(expected?: z.Schema<any, any>): R
+		/**
+		 * @description
+		 * Assert whether an AI response satisfies a true or false statement
+		 *
+		 * @example
+		 * expect(llmResponse).toSatisfyStatement('It contains a question asking for your flight number.')
+		 *
+		 */
+		toSatisfyStatement(expected?: string): R
 	}
 }
 
