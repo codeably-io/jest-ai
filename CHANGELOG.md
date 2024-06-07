@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/codeably-io/jest-ai/compare/v2.0.0...v2.0.1) (2024-06-07)
+
+
+### Bug Fixes
+
+* add missing statement satisfy matcher to types ([701e1fc](https://github.com/codeably-io/jest-ai/commit/701e1fc2c311f751b53aa417bcbb7009145abe42))
+
 # [2.0.0](https://github.com/codeably-io/jest-ai/compare/v1.1.0...v2.0.0) (2024-05-01)
 
 
