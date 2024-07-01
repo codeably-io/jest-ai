@@ -2,6 +2,11 @@ import { Embeddings } from "./embeddings";
 import { isSimilarByScore, Similarity } from "./similarity";
 import { z } from "zod";
 import OpenAI from "openai";
+import {
+  ChatPromptTemplate,
+  HumanMessagePromptTemplate,
+  SystemMessagePromptTemplate,
+} from "@langchain/core/prompts";
 
 import type { ChatCompletion } from "openai/src/resources/chat/completions";
 import type {
@@ -9,9 +14,11 @@ import type {
   Run,
 } from "openai/src/resources/beta/threads/runs";
 import { matchToolCallsToExpectedTools } from "./utils";
+import { ChatOpenAI } from "@langchain/openai";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
 export function getMatchers() {
-  const embeddings = new Embeddings();
+  const embeddings = Embeddings.getInstance()
 
   async function semanticMatcher(
     rank: Similarity,
@@ -96,32 +103,34 @@ export function getMatchers() {
     actual: string,
     model: string = "gpt-4-turbo" // gtp-3.5-turbo does an awful job with this task unfortunately
   ): Promise<boolean> {
-    const openai = new OpenAI();
-    const completion = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: `
-            You are a comprehension utility that confirms whether or not a given statement is true within some context.
-            The user will provide a statement. Using ONLY the provided context, you will determine if the statement is true or false.
-            The context that you will analyse is provided below between the "---" characters.
-            You will respond with only the text "true" or "false" and with no other characters or words.
-            If the answer to the truthiness of the statement cannot be found within the context, respond with "false".
-            ONLY USE INFORMATION FOUND WITHIN THE CONTEXT TO ANSWER THE QUESTION
-            ---
-            ${actual}
-            ---
-          `,
-        },
-        {
-          role: "user",
-          content: `Within the provided context, is the following statement true or false: ${statement}`,
-        },
-      ],
+    const openai = new ChatOpenAI({
       model,
       temperature: 0,
     });
-    return completion.choices[0].message.content === "true";
+    const message = ChatPromptTemplate.fromMessages([
+      SystemMessagePromptTemplate.fromTemplate(
+        `
+          You are a comprehension utility that confirms whether or not a given statement is true within some context.
+          The user will provide a statement. Using ONLY the provided context, you will determine if the statement is true or false.
+          The context that you will analyse is provided below between the "---" characters.
+          You will respond with only the text "true" or "false" and with no other characters or words.
+          If the answer to the truthiness of the statement cannot be found within the context, respond with "false".
+          ONLY USE INFORMATION FOUND WITHIN THE CONTEXT TO ANSWER THE QUESTION
+          ---
+          ${actual}
+          ---
+        `,
+      ),
+      HumanMessagePromptTemplate.fromTemplate(
+        `Within the provided context, is the following statement true or false: ${statement}`,
+      ),
+    ])
+
+    const chain = message.pipe(openai).pipe(new StringOutputParser());
+
+    const completion = await chain.invoke({})
+
+    return completion === 'true'
   }
 
   return {

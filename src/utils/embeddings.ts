@@ -1,23 +1,27 @@
-import OpenAI from 'openai';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { cosineSimilarity } from './utils';
 
 
 export class Embeddings {
-	openai: any;
+	private static instance: Embeddings;
+	private embedding: OpenAIEmbeddings;
 
-	constructor() {
-		this.openai = new OpenAI({
-			apiKey: process.env.OPENAI_API_KEY ?? "",
-		});
+	private constructor() {
+		this.embedding = new OpenAIEmbeddings();
 	}
 
-	async compareEmbeddings(expected: string, actual: string) {
-		const openAI = new OpenAIEmbeddings();
+	public static getInstance() {
+		if (!Embeddings.instance) {
+			Embeddings.instance = new Embeddings();
+		}
 
+		return Embeddings.instance;
+	}
+
+	public async compareEmbeddings(expected: string, actual: string) {
 		const vectors = await Promise.all([
-			openAI.embedQuery(expected),
-			openAI.embedQuery(actual)
+			Embeddings.instance.embedding.embedQuery(expected),
+			Embeddings.instance.embedding.embedQuery(actual)
 		]);
 
 		return cosineSimilarity(vectors[0], vectors[1]);
