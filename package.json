@@ -50,7 +50,8 @@
   "scripts": {
     "build": "rollup -c --mini",
     "dev": "rollup -c -w --sourcemaps",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npm run build"
   },
   "keywords": [
     "jest",
