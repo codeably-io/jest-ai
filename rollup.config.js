@@ -17,7 +17,7 @@ export default CLIArgs => {
         resolve(),    // Resolves node_modules imports
         commonjs(),   // Converts CommonJS modules to ES6
     ];
-    if (CLIArgs.mini) {
+    if (CLIArgs.configMini) {
       plugins.push(terser()); // Minify the output (optional)
     }
     return {
