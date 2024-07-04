@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import del from 'rollup-plugin-delete';
 import { terser } from 'rollup-plugin-terser';
+import path from 'path';
 
 const entries = [
     './src/index.ts',
@@ -39,7 +40,7 @@ export default CLIArgs => {
             },
         ],
         external: id =>
-            !id.startsWith('\0') && !id.startsWith('.') && !id.startsWith('/'),
+            !id.startsWith('\0') && !id.startsWith('.') && !path.isAbsolute(id),
         plugins
     }
 };
