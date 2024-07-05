@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/codeably-io/jest-ai/compare/v2.0.1...v2.0.2) (2024-07-05)
+
+
+### Bug Fixes
+
+* **config:** update custom cli config ([07e6c73](https://github.com/codeably-io/jest-ai/commit/07e6c736503682208e5114964a259fde57c3a518))
+
 ## [2.0.1](https://github.com/codeably-io/jest-ai/compare/v2.0.0...v2.0.1) (2024-06-07)
 
 
