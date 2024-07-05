@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/codeably-io/jest-ai/compare/v2.0.2...v2.0.3) (2024-07-05)
+
+
+### Bug Fixes
+
+* **config:** add support for building on windows ([a3a45fa](https://github.com/codeably-io/jest-ai/commit/a3a45fa1368b7d484ee9d4dfdcbeef15855debc0))
+
 ## [2.0.2](https://github.com/codeably-io/jest-ai/compare/v2.0.1...v2.0.2) (2024-07-05)
 
 
