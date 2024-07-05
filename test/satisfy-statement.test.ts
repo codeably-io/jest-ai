@@ -2,7 +2,21 @@ import { getMatchers } from "../src/utils/matcher-utils";
 
 // These tests intentionally make live requests to OpenAI
 jest.setTimeout(20000);
-const maybe = process.env.OPENAI_API_KEY ? describe : describe.skip;
+
+function hasOpenAIKey() {
+  return !!process.env.OPENAI_API_KEY;
+}
+
+function hasAzureKey() {
+  return (
+    !!process.env.AZURE_OPENAI_API_KEY &&
+    !!process.env.AZURE_OPENAI_API_VERSION &&
+    !!process.env.AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME &&
+    !!process.env.AZURE_OPENAI_API_INSTANCE_NAME
+  );
+}
+
+const maybe = hasOpenAIKey() || hasAzureKey() ? describe : describe.skip;
 
 maybe("satisfy statement", () => {
   it("passes when the information clearly matches", async () => {

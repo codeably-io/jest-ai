@@ -50,7 +50,8 @@
   "scripts": {
     "build": "rollup -c --configMini",
     "dev": "rollup -c -w --sourcemaps",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npm run build"
   },
   "keywords": [
     "jest",
@@ -60,7 +61,7 @@
   ],
   "dependencies": {
     "@jest/globals": ">= 28",
-    "@langchain/openai": "^0.0.28",
+    "@langchain/openai": "^0.2.0",
     "openai": "^4.38.2",
     "zod": "^3.22.5"
   },
