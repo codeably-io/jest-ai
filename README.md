@@ -40,6 +40,8 @@ that you can use to extend jest. These will allow testing the calls and response
   - [`toHaveUsedAllTools`](#tohaveusedalltools)
   - [`toHaveUsedAllAssistantTools`](#tohaveusedallassistanttools)
   - [`toMatchZodSchema`](#tomatchzodschema)
+- [Configuration](#configuration)
+  - [Similarity Thresholds](#thresholds)
 - [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -359,6 +361,23 @@ expect(getResponse).toMatchZodSchema(expectedSchema);
 ```
 
 <hr />
+
+## Configuration
+
+Some aspects of the library can be configured to suit your specific requirements. Configuration is managed within the Jest setup file:
+```javascript
+global.jestAIConfig = {
+    similarityLevel: 'mid',
+}
+```
+
+| Configuration Option   | Description                                                                                                                                                                         | Type                          | Default                                     |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|---------------------------------------------|
+| `similarityLevel`      | Defines the level of similarity/semantic matching using cosine similarity. Three levels are available: `high`, `mid`, and `low`. The default is `mid`.                           | `'high' \| 'mid' \| 'low'`   | `mid`                                       |
+| `similarityThreshold`  | Sets a numerical threshold for the semantic matcher. This takes precedence over other configurations and internal settings.                                                      | Number                        | `null`                                      |
+| `similarityThresholds` | Sets thresholds for the semantic matcher across all levels.                                                                                                                        | Object                        | `{ 'high': 0.85, 'mid': 0.75, 'low': 0.7 }` |
+
+You can use these options to fine-tune the behavior of the library according to your needs.
 
 ## LICENSE
 
